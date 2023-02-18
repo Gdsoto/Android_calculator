@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">JavaCalculator</string>
+    <string name="calculadora">Calculadora</string>
+    <string name="c">C</string>
+    <string name="del">Del</string>
+    <string name="parents">()</string>
+    <string name="div">/</string>
+</resources>
