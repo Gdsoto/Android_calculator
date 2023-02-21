@@ -275,7 +275,8 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 tools:ignore="VisualLintButtonSize"
-                android:id="@+id/equalButton" />
+                android:id="@+id/equalButton"
+                android:onClick="handleResult"/>
 
             <Button
                 style="?android:attr/buttonBarButtonStyle"

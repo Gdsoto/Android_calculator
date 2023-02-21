@@ -4,17 +4,24 @@ import static java.lang.Integer.parseInt;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView workingView;
+    String screenValue = "";
     String inputValue = "";
     String operator = "";
+    double numberOne;
+    double numberTwo;
+    double result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,79 +34,148 @@ public class MainActivity extends AppCompatActivity {
         workingView = (TextView) findViewById(R.id.workAreaTextView);
     }
 
+    private boolean hasOperator (String value) {
+        return Objects.equals(value, "+") || Objects.equals(value, "-") || Objects.equals(value, "/") || Objects.equals(value, "*");
+    }
+
     private void setInputValue(String value) {
-        inputValue = inputValue + value;
-        workingView.setText(inputValue);
+
+        if (hasOperator(value)) {
+            inputValue = inputValue + "s" + value + "s";
+        } else {
+            inputValue = inputValue + value;
+        }
+    }
+
+    private void setScreenValue(String value) {
+        setInputValue(value);
+        screenValue = screenValue + value;
+        workingView.setText(screenValue);
     }
 
     public void handleClear(View view) {
-        if (Objects.requireNonNull(inputValue).length() > 0) {
-            inputValue = inputValue.substring(0, inputValue.length() - 1);
-            workingView.setText(inputValue);
+        if (Objects.requireNonNull(screenValue).length() > 0) {
+            screenValue = screenValue.substring(0, screenValue.length() - 1);
+            workingView.setText(screenValue);
+
+            if (String.valueOf(inputValue.charAt(inputValue.length() - 1)).equals("s")) {
+                inputValue = inputValue.substring(0, inputValue.length() - 2);
+            } else {
+                inputValue = inputValue.substring(0, inputValue.length() - 1);
+            }
         }
     }
     public void handleClearAll(View view) {
+        screenValue = "";
         inputValue = "";
-        workingView.setText(inputValue);
+        workingView.setText(screenValue);
     }
 
-    private void getResult() {
+    public void handleResult(View view) {
+        getResult(inputValue.split("s"));
+        screenValue = String.valueOf(result);
+        workingView.setText(screenValue);
+    }
 
+    private void getResult(String[] operation){
+        int iterator = 0;
+        result = Double.parseDouble(operation[iterator]);
+
+        while (iterator < operation.length - 1){
+            int val1 = iterator + 1;
+            int val2 = iterator + 2;
+
+            numberOne = result;
+            operator = operation[val1];
+            numberTwo = Double.parseDouble(operation[val2]);
+            getOperation();
+            iterator = iterator + 2;
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void getOperation() {
+
+        switch (operator){
+            case "+": {
+                result = numberOne + numberTwo;
+                break;
+            }
+            case "-": {
+                result = numberOne - numberTwo;
+                break;
+            }
+            case "*": {
+                result = numberOne * numberTwo;
+                break;
+            }
+            case "/": {
+                if (numberTwo == 0.0) {
+                    Toast.makeText(this, "No se puede dividir entre 0", Toast.LENGTH_SHORT).show();
+                    inputValue = "";
+                    screenValue = "";
+                } else {
+                    result = numberOne / numberTwo;
+                }
+            }
+            default:
+                break;
+        }
     }
 
     public void handleAdd(View view) {
-        setInputValue("+");
+        setScreenValue("+");
     }
 
     public void handleMinus(View view) {
-        setInputValue("-");
+        setScreenValue("-");
     }
 
     public void handleDivide(View view) {
-        setInputValue("/");
+        setScreenValue("/");
     }
 
     public void handleMultiply(View view) {
-        setInputValue("*");
+        setScreenValue("*");
     }
 
     public void handleOne(View view) {
-        setInputValue("1");
+        setScreenValue("1");
     }
 
     public void handleTwo(View view) {
-        setInputValue("2");
+        setScreenValue("2");
     }
 
     public void handleThree(View view) {
-        setInputValue("3");
+        setScreenValue("3");
     }
 
     public void handleFour(View view) {
-        setInputValue("4");
+        setScreenValue("4");
     }
 
     public void handleFive(View view) {
-        setInputValue("5");
+        setScreenValue("5");
     }
 
     public void handleSix(View view) {
-        setInputValue("6");
+        setScreenValue("6");
     }
 
     public void handleSeven(View view) {
-        setInputValue("7");
+        setScreenValue("7");
     }
 
     public void handleEight(View view) {
-        setInputValue("8");
+        setScreenValue("8");
     }
 
     public void handleNine(View view) {
-        setInputValue("9");
+        setScreenValue("9");
     }
 
     public void handleZero(View view) {
-        setInputValue("0");
+        setScreenValue("0");
     }
 }
